@@ -1,7 +1,9 @@
-import typescript from 'rollup-plugin-typescript2';
+// import typescript from 'rollup-plugin-typescript2';
 import babel from 'rollup-plugin-babel';
 import { uglify } from 'rollup-plugin-uglify';
-import replace from 'rollup-plugin-replace';
+import flow from 'rollup-plugin-flow';
+import resolve from 'rollup-plugin-node-resolve';
+import commonJS from 'rollup-plugin-commonjs'
 
 // PostCSS plugins
 import postcss from 'rollup-plugin-postcss';
@@ -13,14 +15,22 @@ import cssnano from 'cssnano';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-  input: 'src/index.ts',
+  input: 'src/index.js',
   output: {
-    name: 'checkout',
+    name: 'Nano',
     file: 'dist/checkout.min.js',
-    format: 'iife'
+    format: 'iife',
+    // globals: {
+    //   'zoid': 'zoid'
+    // }
   },
+  // external: ['zoid'],
   plugins: [
-    typescript(),
+    resolve(),
+    commonJS({
+      include: 'node_modules/zoid/**'
+    }),
+    flow(),
     babel({
       exclude: 'node_modules/**'
     }),
